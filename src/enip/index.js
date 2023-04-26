@@ -230,7 +230,7 @@ class ENIP extends Socket {
      * @param {function} [cb=null] - Callback to be Passed to Parent.Write()
      * @memberof ENIP
      */
-    write_cip(data, connected = false, timeout = 10, cb = null) {
+    write_cip(data, additionalCPFItems = [], connected = false, timeout = 10, cb = null) {
         const { sendRRData, sendUnitData } = encapsulation;
         const { session, connection } = this.state;
 
@@ -246,7 +246,7 @@ class ENIP extends Socket {
             }
             const packet = connected
                 ? sendUnitData(session.id, data, connection.id, connection.seq_num)
-                : sendRRData(session.id, data, timeout);
+                : sendRRData(session.id, data,additionalCPFItems, timeout);
 
             if (cb) {
                 this.write(packet, cb);
