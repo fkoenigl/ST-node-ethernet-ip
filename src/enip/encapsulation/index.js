@@ -292,7 +292,7 @@ const unregisterSession = session => {
  * @param {number} [timeout=10] - Timeout (sec)
  * @returns {string} UCMM Encapsulated Message String
  */
-const sendRRData = (session, data, timeout = 10) => {
+const sendRRData = (session, data, additionalCPFItems=[], timeout = 10) => {
     const { SendRRData } = commands;
 
     let timeoutBuf = Buffer.alloc(6);
@@ -302,7 +302,8 @@ const sendRRData = (session, data, timeout = 10) => {
     // Enclose in Common Packet Format
     let buf = CPF.build([
         { TypeID: CPF.ItemIDs.Null, data: Buffer.from([]) },
-        { TypeID: CPF.ItemIDs.UCMM, data: data }
+        { TypeID: CPF.ItemIDs.UCMM, data: data },
+        ...additionalCPFItems
     ]);
 
     // Join Timeout Data with
